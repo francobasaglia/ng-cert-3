@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
-import {Category, Difficulty, ApiQuestion, Question, Results} from './data.models';
+import {Category, Difficulty, ApiQuestion, Question, Results} from '../models/data.models';
 
 @Injectable({
   providedIn: 'root'

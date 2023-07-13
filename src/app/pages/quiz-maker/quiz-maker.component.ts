@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {Category, Difficulty, Question} from '../data.models';
+import {Category, Difficulty, Question} from '../../models/data.models';
 import {Observable} from 'rxjs';
-import {QuizService} from '../quiz.service';
+import {QuizService} from '../../services/quiz.service';
 
 @Component({
   selector: 'app-quiz-maker',
