@@ -39,6 +39,12 @@
   </div>
 </div>
 
-<div *ngIf="questions$ | async as questions" class="row">
-   <app-quiz [questions]="questions" (submit)="onSubmit($event)"></app-quiz>
+<div *ngIf="questions" class="row">
+   <app-quiz 
+    [questions]="questions" 
+    [canChangeQuestion]="canChangeQuestion"
+    (changeQuestion)="onChangeQuestion($event)"
+    (submit)="onSubmit($event)"
+  >
+  </app-quiz>
 </div>

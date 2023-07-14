@@ -9,7 +9,15 @@
       'tertiary': (!userAnswer && answer === currentSelection) || (userAnswer === correctAnswer && answer === userAnswer)
     }"
     [innerHTML]="answer"
-    (click)="buttonClicked(answer)"
+    (click)="questionSelected(answer)"
   >
+  </button>
+
+  <button
+    *ngIf="canChangeQuestion"
+    class="inverse"
+    (click)="questionChange()"
+  >
+    Change question
   </button>
 </div>

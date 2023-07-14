@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { forkJoin, map, Observable } from 'rxjs';
-import { QuizMakerOptions, QuizQuestion, QuizResults, DifficultyResponse, CategoryResponse, FormOption, QuizMakerCategory } from '../models';
+import { QuizMakerOptions, QuizQuestion, QuizResults, DifficultyResponse, CategoryResponse, FormOption, QuizMakerCategory, QuestionResponse } from '../models';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -31,13 +31,18 @@ export class QuizService {
 
   public createQuiz(categoryId: string, difficultyId: string): Observable<QuizQuestion[]> {
     return this.apiService.getQuestions(categoryId, difficultyId).pipe(
-        map(res => {
-          const quiz: QuizQuestion[] = res.results.map(q => (
-            {...q, all_answers: [...q.incorrect_answers, q.correct_answer].sort(() => (Math.random() > 0.5) ? 1 : -1)}
-          ));
-          return quiz;
-        })
-      );
+      map(response => response.results.map(question => this.getQuizQuestion(question)))
+    );
+  }
+
+  public updateQuiz(categoryId: string, difficultyId: string, questions: QuizQuestion[], index: number): Observable<QuizQuestion[]> {
+    return this.apiService.getQuestion(categoryId, difficultyId).pipe(
+      map(question => {
+        questions[index] = this.getQuizQuestion(question);
+
+        return questions;
+      })
+    );
   }
 
   public computeScore(questions: QuizQuestion[], answers: string[]): void {
@@ -91,5 +96,12 @@ export class QuizService {
       label: difficulty.name, 
       disabled: false
     }));
+  }
+
+  private getQuizQuestion(questions: QuestionResponse): QuizQuestion {
+    return {
+      ...questions,
+      all_answers: [ ...questions.incorrect_answers, questions.correct_answer ].sort(() => (Math.random() > 0.5) ? 1 : -1)
+    };
   }
 }

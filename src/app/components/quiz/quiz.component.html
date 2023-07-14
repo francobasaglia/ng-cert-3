@@ -1,7 +1,9 @@
 <app-question 
   *ngFor="let question of questions; index as index;" 
   [question]="question"
+  [canChangeQuestion]="canChangeQuestion"
   (change)="onAnswerChange($event, index)"
+  (changeQuestion)="onChangeQuestion(index)"
 >
 </app-question>
 

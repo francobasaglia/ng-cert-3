@@ -15,7 +15,8 @@ export class QuizMakerComponent {
   public form!: FormGroup;
   public subcategories: FormOption[] = [];
   public options!: QuizMakerOptions;
-  public questions$!: Observable<QuizQuestion[]> | undefined;
+  public questions: QuizQuestion[] | undefined;
+  public canChangeQuestion: boolean = true;
 
   constructor(
     private quizService: QuizService,
@@ -41,8 +42,16 @@ export class QuizMakerComponent {
     const { value, valid } = this.form;
 
     if (valid) {
-      this.questions$ = this.quizService.createQuiz(value.categoryId, value.difficulty);
+      this.canChangeQuestion = true;
+      this.quizService.createQuiz(value.categoryId, value.difficulty).subscribe(response => this.questions = response);
     }
+  }
+
+  public onChangeQuestion(index: number): void {
+    const { value } = this.form;
+
+    this.canChangeQuestion = false;
+    this.quizService.updateQuiz(value.categoryId, value.difficulty, this.questions!, index).subscribe(response => this.questions = response)
   }
 
   public onSubmit(result: QuizAnswers): void {
