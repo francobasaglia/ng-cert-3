@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Injector, Input, OnDestroy, ViewChild, forwardRef } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
-import { BehaviorSubject, Subject, filter, fromEvent, take } from 'rxjs';
+import { BehaviorSubject, Subject, filter, fromEvent, take, takeUntil } from 'rxjs';
 import { FormOption } from '../../models';
 
 @Component({
@@ -78,13 +78,37 @@ export class AutoFilterComponent<T = any> implements AfterViewInit, OnDestroy, C
 
   public registerOnTouched(fn: any): void { }
 
-  public optionSelected(event: MouseEvent, option: FormOption): void {
+  public optionSelected(option: FormOption, event: MouseEvent): void {
     if (!!event && event instanceof MouseEvent && event.button !== 0) {
       return;
     }
 
-    this.control.setValue(option.id);
+    this.control.setValue(option[this.valueKey as keyof FormOption]);
+    this.inputControl.setValue(option.label);
   }
 
-  private listenDOMEvents(): void { }
+  private listenDOMEvents(): void {
+    const events = [
+      {
+        name: 'focus',
+        callback: () => {
+          this.resultsElementRef.nativeElement.hidden = false;
+        }
+      },
+      {
+        name: 'blur',
+        callback: () => {
+          this.resultsElementRef.nativeElement.hidden = true;
+        }
+      }
+    ];
+
+    events.forEach(event => this.addEventListener(event.name, event.callback));
+  }
+
+  private addEventListener(name: string, callback: (...args: any) => void): void {
+    fromEvent(this.inputElementRef.nativeElement, name).pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe(callback);
+  }
 }

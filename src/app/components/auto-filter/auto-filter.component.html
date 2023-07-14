@@ -6,12 +6,12 @@
     [placeholder]="placeholder" 
   />
 
-  <ul #Results class="results">
+  <ul #Results [hidden]="true">
     <li 
       *ngFor="let option of options | listFilter: 'label': inputControl.value!"
       [value]="option.label"
       [innerHTML]="option.label | highlight: inputControl.value!"
-      (mousedown)="optionSelected($event, option)"
+      (mousedown)="optionSelected(option, $event)"
     >
     </li>
   </ul>
