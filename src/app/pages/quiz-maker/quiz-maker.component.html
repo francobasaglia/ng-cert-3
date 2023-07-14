@@ -3,25 +3,31 @@
     <form [formGroup]="form" (ngSubmit)="createQuiz()">
       <fieldset>
         <label for="category">Select category</label>
-        <select id="category" formControlName="categoryLabel">
-          <option *ngFor="let category of options.categories" [value]="category.label">
-            {{ category.label }}
-          </option>
-        </select>
+        <app-auto-filter 
+          id="category"
+          formControlName="categoryLabel"
+          placeholder="Select category"
+          valueKey="label"
+          [options]="options.categories"
+        >
+        </app-auto-filter>
       </fieldset>
 
       <fieldset *ngIf="subcategories.length">
         <label for="subcategory">Select subcategory</label>
-        <select id="subcategory" formControlName="categoryId">
-          <option *ngFor="let subcategory of subcategories" [value]="subcategory.id">
-            {{ subcategory.label }}
-          </option>
-        </select>
+        <app-auto-filter 
+          id="subcategory"
+          formControlName="categoryId"
+          placeholder="Select subcategory"
+          valueKey="id"
+          [options]="subcategories"
+        >
+        </app-auto-filter>
       </fieldset>
 
       <fieldset>
         <label for="difficulty">Select difficulty</label>
-        <select id="difficulty" formControlName="difficulty">
+        <select id="difficulty" style="display: block;" formControlName="difficulty">
           <option *ngFor="let difficulty of options.difficulties" [value]="difficulty.id">
             {{ difficulty.label }}
           </option>

@@ -28,7 +28,9 @@ export class QuizMakerComponent {
     this.form.get('categoryLabel')!.valueChanges.pipe(takeUntilDestroyed()).subscribe(categoryLabel => {
       const category = this.options.categories.find(category => category.label === categoryLabel)!;
 
-      this.subcategories = category.subcategories;
+      if (!category) return;
+
+      this.subcategories = category.subcategories ?? [];
 
       if (this.subcategories.length) {
         this.form.get('categoryId')!.setValue(null);

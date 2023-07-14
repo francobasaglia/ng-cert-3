@@ -1,0 +1,18 @@
+<div *ngIf="ready$ | async" class="auto-filter-wrapper">
+  <input 
+    #Search 
+    type="text"
+    [formControl]="inputControl"
+    [placeholder]="placeholder" 
+  />
+
+  <ul #Results class="results">
+    <li 
+      *ngFor="let option of options | listFilter: 'label': inputControl.value!"
+      [value]="option.label"
+      [innerHTML]="option.label | highlight: inputControl.value!"
+      (mousedown)="optionSelected($event, option)"
+    >
+    </li>
+  </ul>
+</div>
