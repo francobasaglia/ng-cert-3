@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Question, QuizAnswers } from '../../models';
+import { QuizQuestion, QuizAnswers } from '../../models';
 
 @Component({
   selector: 'app-quiz',
@@ -8,7 +8,7 @@ import { Question, QuizAnswers } from '../../models';
 })
 export class QuizComponent {
   @Input()
-  public questions: Question[] | null = [];
+  public questions: QuizQuestion[] | null = [];
 
   @Output()
   public readonly submit = new EventEmitter<QuizAnswers>();

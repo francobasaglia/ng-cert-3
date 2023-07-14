@@ -1,5 +1,5 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
-import {Question} from '../../models';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { QuizQuestion } from '../../models';
 
 @Component({
   selector: 'app-question',
@@ -7,34 +7,22 @@ import {Question} from '../../models';
   styleUrls: ['./question.component.css']
 })
 export class QuestionComponent {
-
   @Input({required: true})
-  question!: Question;
+  public question!: QuizQuestion;
+  
   @Input()
-  correctAnswer?: string;
+  public correctAnswer?: string;
+  
   @Input()
-  userAnswer?: string;
-
-  getButtonClass(answer: string): string {
-    if (! this.userAnswer) {
-        if (this.currentSelection == answer)
-          return "tertiary";
-    } else {
-      if (this.userAnswer == this.correctAnswer && this.userAnswer == answer)
-        return "tertiary";
-      if (answer == this.correctAnswer)
-        return "secondary";
-    }
-    return "primary";
-  }
+  public userAnswer?: string;
 
   @Output()
-  change = new EventEmitter<string>();
+  public readonly change = new EventEmitter<string>();
 
-  currentSelection!: string;
+  public currentSelection: string = '';
 
-  buttonClicked(answer: string): void {
+  public buttonClicked(answer: string): void {
     this.currentSelection = answer;
-    this.change.emit(answer);
+    this.change.emit(this.currentSelection);
   }
 }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Category, Question, QuizAnswers } from '../../models';
+import { QuizMakerCategory, QuizQuestion, QuizAnswers } from '../../models';
 import { QuizService } from '../../services';
 
 @Component({
@@ -10,8 +10,8 @@ import { QuizService } from '../../services';
   styleUrls: ['./quiz-maker.component.css']
 })
 export class QuizMakerComponent {
-  public categories$: Observable<Category[]>;
-  public questions$!: Observable<Question[]>;
+  public categories$: Observable<QuizMakerCategory[]>;
+  public questions$!: Observable<QuizQuestion[]>;
 
   constructor(
     private quizService: QuizService,

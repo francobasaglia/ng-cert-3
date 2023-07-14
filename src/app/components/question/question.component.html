@@ -1,8 +1,15 @@
 <p [innerHTML]="question.question"></p>
+
 <div>
-  <button (click)="buttonClicked(answer)"
-          [class]="getButtonClass(answer)"
-          *ngFor="let answer of question.all_answers"
-          [innerHTML]="answer">
+  <button 
+    *ngFor="let answer of question.all_answers"
+    class="primary"
+    [ngClass]="{
+      'secondary': userAnswer !== correctAnswer && answer === correctAnswer,
+      'tertiary': (!userAnswer && answer === currentSelection) || (userAnswer === correctAnswer && answer === userAnswer)
+    }"
+    [innerHTML]="answer"
+    (click)="buttonClicked(answer)"
+  >
   </button>
 </div>

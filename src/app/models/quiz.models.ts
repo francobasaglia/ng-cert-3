@@ -1,18 +1,19 @@
-export interface Category {
+export interface QuizMakerOptions {
+  categories: QuizMakerCategory[];
+  difficulties: QuizMakerDifficulty[];
+}
+
+export interface QuizMakerCategory {
   id: number;
   name: string;
 }
 
-export interface ApiQuestion {
-  category: string;
-  type: string;
-  difficulty: string;
-  question: string;
-  correct_answer: string;
-  incorrect_answers: string[];
+export interface QuizMakerDifficulty {
+  id: string;
+  name: string;
 }
 
-export interface Question {
+export interface QuizQuestion {
   question: string;
   correct_answer: string;
   incorrect_answers: string[];
@@ -21,14 +22,11 @@ export interface Question {
 
 export interface QuizAnswers {
   answers: string[];
-  questions: Question[];
+  questions: QuizQuestion[];
 }
 
 export interface QuizResults {
-  questions: Question[];
+  questions: QuizQuestion[];
   answers: string[];
   score: number;
 }
-
-
-export type Difficulty = "Easy" | "Medium" | "Hard";
