@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
-import { QuizMakerCategory, QuizQuestion, QuizResults } from '../models/quiz.models';
+import { forkJoin, map, Observable } from 'rxjs';
+import { QuizMakerOptions, QuizQuestion, QuizResults, DifficultyResponse, CategoryResponse, FormOption, QuizMakerCategory } from '../models';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -11,10 +11,22 @@ export class QuizService {
 
   constructor(private apiService: ApiService) { }
 
-  public getAllCategories(): Observable<QuizMakerCategory[]> {
-    return this.apiService.getCategories().pipe(
-      map(response => response.trivia_categories)
-    );
+  public getQuizMakerOptions(): Observable<QuizMakerOptions> {
+    return forkJoin([
+      this.apiService.getCategories().pipe(
+        map(response => response.trivia_categories)
+      ),
+      this.apiService.getDifficulties().pipe(
+        map(response => response.trivia_difficulties)
+      )
+    ]).pipe(
+      map<[CategoryResponse[], DifficultyResponse[]], QuizMakerOptions>(([ categories, difficulties ]) => {
+        return {
+          categories: this.getCategories(categories),
+          difficulties: this.getDifficulties(difficulties)
+        };
+      })
+    )
   }
 
   public createQuiz(categoryId: string, difficultyId: string): Observable<QuizQuestion[]> {
@@ -39,5 +51,45 @@ export class QuizService {
 
   public getLatestResults(): QuizResults | undefined {
     return this.latestResults;
+  }
+
+  private getCategories(categories: CategoryResponse[]): QuizMakerCategory[] {
+    const quizMakerCategories: QuizMakerCategory[] = [];
+
+    categories.forEach(category => {
+      const [ categoryName, subcategoryName ] = category.name.split(':').map(value => value.trim());
+      const categoryIndex = quizMakerCategories.findIndex(quizMakerCategory => quizMakerCategory.label === categoryName);
+
+      if (categoryIndex === -1) {
+        quizMakerCategories.push({
+          id: !subcategoryName ? category.id : '',
+          label: categoryName,
+          disabled: false,
+          subcategories: !subcategoryName ? [] : [ this.getSubcategories(category.id, subcategoryName) ]
+        });
+      } else {
+        quizMakerCategories[categoryIndex].subcategories.push(
+          this.getSubcategories(category.id, subcategoryName)
+        );
+      }
+    });
+
+    return quizMakerCategories;
+  }
+
+  private getSubcategories(id: string, label: string): FormOption {
+    return {
+      id: id,
+      label: label,
+      disabled: false
+    };
+  }
+
+  private getDifficulties(difficulties: DifficultyResponse[]): FormOption[] {
+    return difficulties.map(difficulty => ({
+      id: difficulty.id, 
+      label: difficulty.name, 
+      disabled: false
+    }));
   }
 }

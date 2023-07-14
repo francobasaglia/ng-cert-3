@@ -1,16 +1,12 @@
+import { FormOption } from './form.models';
+
 export interface QuizMakerOptions {
   categories: QuizMakerCategory[];
-  difficulties: QuizMakerDifficulty[];
+  difficulties: FormOption[];
 }
 
-export interface QuizMakerCategory {
-  id: number;
-  name: string;
-}
-
-export interface QuizMakerDifficulty {
-  id: string;
-  name: string;
+export interface QuizMakerCategory extends FormOption {
+  subcategories: FormOption[];
 }
 
 export interface QuizQuestion {

@@ -3,12 +3,12 @@ export interface CategoriesResponse {
 }
 
 export interface CategoryResponse {
-   id: number;
+   id: string;
    name: string;
 }
 
 export interface DifficultiesResponse {
-   difficulties_categories: DifficultyResponse[];
+   trivia_difficulties: DifficultyResponse[];
 }
 
 export interface DifficultyResponse {

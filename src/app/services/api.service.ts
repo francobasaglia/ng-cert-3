@@ -21,7 +21,7 @@ export class ApiService {
      * Replace this mocked implementation by a API request.
      */
     return of<DifficultiesResponse>({
-      difficulties_categories: [
+      trivia_difficulties: [
         {
           id: 'easy',
           name: 'Easy'

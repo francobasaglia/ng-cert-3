@@ -1,22 +1,44 @@
 <div class="row">
-  <div class="col-sm-11">
-    <select #category id="categorySelect">
-      <option>Select category</option>
-      <option [value]="category.id" *ngFor="let category of categories$ | async">
-        {{category.name}}
-      </option>
-    </select>
-    <select #difficulty id="difficultySelect">
-      <option>Select difficulty</option>
-      <option>Easy</option>
-      <option>Medium</option>
-      <option>Hard</option>
-    </select>
-    <button class="primary" id="createBtn" (click)="createQuiz(category.value, difficulty.value)">Create</button>
+  <div *ngIf="options" class="col-sm-11">
+    <form [formGroup]="form" (ngSubmit)="createQuiz()">
+      <fieldset>
+        <label for="category">Select category</label>
+        <select id="category" formControlName="categoryLabel">
+          <option *ngFor="let category of options.categories" [value]="category.label">
+            {{ category.label }}
+          </option>
+        </select>
+      </fieldset>
+
+      <fieldset *ngIf="subcategories.length">
+        <label for="subcategory">Select subcategory</label>
+        <select id="subcategory" formControlName="categoryId">
+          <option *ngFor="let subcategory of subcategories" [value]="subcategory.id">
+            {{ subcategory.label }}
+          </option>
+        </select>
+      </fieldset>
+
+      <fieldset>
+        <label for="difficulty">Select difficulty</label>
+        <select id="difficulty" formControlName="difficulty">
+          <option *ngFor="let difficulty of options.difficulties" [value]="difficulty.id">
+            {{ difficulty.label }}
+          </option>
+        </select>
+      </fieldset>
+
+      <button class="primary" type="submit">
+        Create
+      </button>
+    </form>
   </div>
 
+  <div *ngIf="!options">
+    Loading...
+  </div>
 </div>
 
-<div class="row">
-   <app-quiz [questions]="questions$ | async" (submit)="onSubmit($event)"></app-quiz>
+<div *ngIf="questions$ | async as questions" class="row">
+   <app-quiz [questions]="questions" (submit)="onSubmit($event)"></app-quiz>
 </div>
