@@ -1,2 +1,2 @@
 export * from './api.models';
-export * from './data.models';
+export * from './quiz.models';

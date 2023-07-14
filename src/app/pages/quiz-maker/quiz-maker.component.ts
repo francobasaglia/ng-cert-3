@@ -1,7 +1,8 @@
-import {Component} from '@angular/core';
-import {Category, Difficulty, Question} from '../../models/data.models';
-import {Observable} from 'rxjs';
-import {QuizService} from '../../services/quiz.service';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { Category, Question, QuizAnswers } from '../../models';
+import { QuizService } from '../../services';
 
 @Component({
   selector: 'app-quiz-maker',
@@ -9,15 +10,22 @@ import {QuizService} from '../../services/quiz.service';
   styleUrls: ['./quiz-maker.component.css']
 })
 export class QuizMakerComponent {
+  public categories$: Observable<Category[]>;
+  public questions$!: Observable<Question[]>;
 
-  categories$: Observable<Category[]>;
-  questions$!: Observable<Question[]>;
-
-  constructor(protected quizService: QuizService) {
+  constructor(
+    private quizService: QuizService,
+    private router: Router
+  ) {
     this.categories$ = quizService.getAllCategories()
   }
 
-  createQuiz(cat: string, difficulty: string): void {
-    this.questions$ = this.quizService.createQuiz(cat, difficulty as Difficulty);
+  public createQuiz(cat: string, difficulty: string): void {
+    this.questions$ = this.quizService.createQuiz(cat, difficulty.toLowerCase());
+  }
+
+  public onSubmit(result: QuizAnswers): void {
+    this.quizService.computeScore(result.questions, result.answers);
+    this.router.navigateByUrl('/results');
   }
 }

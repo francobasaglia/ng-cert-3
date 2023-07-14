@@ -1,29 +1,24 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {map, Observable} from 'rxjs';
-import {Category, Difficulty, ApiQuestion, Question, QuizResults } from '../models/data.models';
+import { Injectable } from '@angular/core';
+import { map, Observable } from 'rxjs';
+import { Category, Difficulty, Question, QuizResults } from '../models/quiz.models';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuizService {
+  private latestResults: QuizResults | undefined;
 
-  private API_URL = "https://opentdb.com/";
-  private latestResults!: QuizResults;
+  constructor(private apiService: ApiService) { }
 
-  constructor(private http: HttpClient) {
-  }
-
-  getAllCategories(): Observable<Category[]> {
-    return this.http.get<{ trivia_categories: Category[] }>(this.API_URL + "api_category.php").pipe(
+  public getAllCategories(): Observable<Category[]> {
+    return this.apiService.getCategories().pipe(
       map(res => res.trivia_categories)
     );
   }
 
-  createQuiz(categoryId: string, difficulty: Difficulty): Observable<Question[]> {
-    return this.http.get<{ results: ApiQuestion[] }>(
-        `${this.API_URL}/api.php?amount=5&category=${categoryId}&difficulty=${difficulty.toLowerCase()}&type=multiple`)
-      .pipe(
+  public createQuiz(categoryId: string, difficultyId: string): Observable<Question[]> {
+    return this.apiService.getQuestions(categoryId, difficultyId).pipe(
         map(res => {
           const quiz: Question[] = res.results.map(q => (
             {...q, all_answers: [...q.incorrect_answers, q.correct_answer].sort(() => (Math.random() > 0.5) ? 1 : -1)}
@@ -33,7 +28,7 @@ export class QuizService {
       );
   }
 
-  computeScore(questions: Question[], answers: string[]): void {
+  public computeScore(questions: Question[], answers: string[]): void {
     let score = 0;
     questions.forEach((q, index) => {
       if (q.correct_answer == answers[index])
@@ -42,7 +37,7 @@ export class QuizService {
     this.latestResults = {questions, answers, score};
   }
 
-  getLatestResults(): QuizResults {
+  public getLatestResults(): QuizResults | undefined {
     return this.latestResults;
   }
 }

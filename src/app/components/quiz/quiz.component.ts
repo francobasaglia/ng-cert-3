@@ -1,7 +1,5 @@
-import {Component, inject, Input} from '@angular/core';
-import {Question} from '../../models/data.models';
-import {QuizService} from '../../services/quiz.service';
-import {Router} from '@angular/router';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Question, QuizAnswers } from '../../models';
 
 @Component({
   selector: 'app-quiz',
@@ -9,17 +7,22 @@ import {Router} from '@angular/router';
   styleUrls: ['./quiz.component.css']
 })
 export class QuizComponent {
-
   @Input()
-  questions: Question[] | null = [];
+  public questions: Question[] | null = [];
 
-  userAnswers: string[] = [];
-  quizService = inject(QuizService);
-  router = inject(Router);
+  @Output()
+  public readonly submit = new EventEmitter<QuizAnswers>();
 
-  submit(): void {
-    this.quizService.computeScore(this.questions ?? [], this.userAnswers);
-    this.router.navigateByUrl("/results");
+  public answers: string[] = [];
+
+  public onAnswerChange(choice: string, index: number): void {
+    this.answers[index] = choice;
   }
 
+  public onSubmit(): void {
+    this.submit.emit({ 
+      answers: this.answers,
+      questions: this.questions ?? []
+    });
+  }
 }

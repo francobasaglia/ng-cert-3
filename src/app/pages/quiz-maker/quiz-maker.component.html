@@ -16,6 +16,7 @@
   </div>
 
 </div>
+
 <div class="row">
-   <app-quiz [questions]="questions$ | async" ></app-quiz>
+   <app-quiz [questions]="questions$ | async" (submit)="onSubmit($event)"></app-quiz>
 </div>

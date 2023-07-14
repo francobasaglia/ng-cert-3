@@ -38,7 +38,7 @@ export class ApiService {
     });
   }
 
-  public getQuestions(categoryId: number, difficultyId: string, amount: number = 5): Observable<QuestionsResponse> {
+  public getQuestions(categoryId: string, difficultyId: string, amount: number = 5): Observable<QuestionsResponse> {
     const queryParams = {
       amount,
       category: categoryId,
@@ -51,7 +51,7 @@ export class ApiService {
     });
   }
 
-  public getQuestion(categoryId: number, difficultyId: string): Observable<QuestionResponse> {
+  public getQuestion(categoryId: string, difficultyId: string): Observable<QuestionResponse> {
     return this.getQuestions(categoryId, difficultyId, 1).pipe(
       map(response => response.results[0])
     );

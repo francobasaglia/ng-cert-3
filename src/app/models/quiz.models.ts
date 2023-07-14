@@ -19,6 +19,11 @@ export interface Question {
   all_answers: string[];
 }
 
+export interface QuizAnswers {
+  answers: string[];
+  questions: Question[];
+}
+
 export interface QuizResults {
   questions: Question[];
   answers: string[];
