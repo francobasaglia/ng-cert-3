@@ -19,7 +19,7 @@ export interface Question {
   all_answers: string[];
 }
 
-export interface Results {
+export interface QuizResults {
   questions: Question[];
   answers: string[];
   score: number;

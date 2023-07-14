@@ -19,7 +19,7 @@ export class QuizComponent {
 
   submit(): void {
     this.quizService.computeScore(this.questions ?? [], this.userAnswers);
-    this.router.navigateByUrl("/result");
+    this.router.navigateByUrl("/results");
   }
 
 }

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
-import {Category, Difficulty, ApiQuestion, Question, Results} from '../models/data.models';
+import {Category, Difficulty, ApiQuestion, Question, QuizResults } from '../models/data.models';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +9,7 @@ import {Category, Difficulty, ApiQuestion, Question, Results} from '../models/da
 export class QuizService {
 
   private API_URL = "https://opentdb.com/";
-  private latestResults!: Results;
+  private latestResults!: QuizResults;
 
   constructor(private http: HttpClient) {
   }
@@ -42,7 +42,7 @@ export class QuizService {
     this.latestResults = {questions, answers, score};
   }
 
-  getLatestResults(): Results {
+  getLatestResults(): QuizResults {
     return this.latestResults;
   }
 }

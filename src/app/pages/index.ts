@@ -2,13 +2,13 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ComponentsModule } from '../components';
-import { AnswersComponent } from './answers/answers.component';
 import { QuizMakerComponent } from './quiz-maker/quiz-maker.component';
+import { ResultsComponent } from './results/results.component';
 
 @NgModule({
   declarations: [
-    AnswersComponent,
-    QuizMakerComponent
+    QuizMakerComponent,
+    ResultsComponent
   ],
   imports: [
     RouterModule,
@@ -18,6 +18,6 @@ import { QuizMakerComponent } from './quiz-maker/quiz-maker.component';
 })
 export class PagesModule { }
 
-export * from './answers/answers.component';
 export * from './quiz-maker/quiz-maker.component';
+export * from './results/results.component';
  

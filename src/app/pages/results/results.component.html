@@ -1,0 +1,25 @@
+<ng-container *ngIf="results; else NoResults;">
+  <app-question 
+    *ngFor="let question of results.questions; index as index;"
+    [question]="question"
+    [userAnswer]="results.answers[index]"
+    [correctAnswer]="question.correct_answer"
+  >
+  </app-question>
+
+  <div>
+    SCORE: {{ results.score }} OUT OF {{ results.questions.length }}
+  </div>
+</ng-container>
+
+<div>
+  <button class="inverse large" routerLink="/">
+    Create a new quiz
+  </button>
+</div>
+
+<ng-template #NoResults>
+  <p>
+    No results available.
+  </p>
+</ng-template>

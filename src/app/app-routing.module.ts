@@ -1,6 +1,6 @@
 import { inject, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { QuizMakerComponent, AnswersComponent } from './pages';
+import { QuizMakerComponent, ResultsComponent } from './pages';
 import { QuizService } from './services';
 
 const routes: Routes = [
@@ -9,10 +9,10 @@ const routes: Routes = [
     component: QuizMakerComponent
   },
   {
-    path: 'result',
-    component: AnswersComponent,
+    path: 'results',
+    component: ResultsComponent,
     resolve: {
-      data: () => inject(QuizService).getLatestResults()
+      results: () => inject(QuizService).getLatestResults()
     }
   },
   {
