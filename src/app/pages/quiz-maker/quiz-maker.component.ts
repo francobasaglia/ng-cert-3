@@ -29,7 +29,7 @@ export class QuizMakerComponent {
 
       this.subcategories = category.subcategories;
 
-      if (this.subcategories) {
+      if (this.subcategories.length) {
         this.form.get('categoryId')!.setValue(null);
       } else {
         this.form.get('categoryId')!.setValue(category.id);
