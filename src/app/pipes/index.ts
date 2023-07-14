@@ -1,8 +1,10 @@
 import { NgModule, Type } from '@angular/core';
 import { HighlightPipe } from './highlight.pipe';
+import { ListFilterPipe } from './list-filter.pipe';
 
 const PIPES: Type<any>[] = [
-  HighlightPipe
+  HighlightPipe,
+  ListFilterPipe
 ]
 
 @NgModule({
@@ -19,3 +21,4 @@ const PIPES: Type<any>[] = [
 export class PipesModule { }
 
 export * from './highlight.pipe';
+export * from './list-filter.pipe';
